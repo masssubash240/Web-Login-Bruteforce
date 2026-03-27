@@ -1,6 +1,6 @@
 # Web-Login-Bruteforce
 # Web Login Brute‑Force Tool (Educational)
-
+#  CYBER SUBASH- Tool development
 A Python script to demonstrate how brute‑force attacks work against web login forms.  
 **For authorized testing and educational purposes only.**
 
@@ -22,4 +22,11 @@ A Python script to demonstrate how brute‑force attacks work against web login 
 git clone https://github.com/GOD OF CYBER/web-login-bruteforce.git
 cd web-login-bruteforce
 pip install -r requirements.txt
- CYBER SUBASH- Tool development
+ 
+
+packages in python
+pip install requests
+# Optional for colored output:
+pip install colorama
+# Optional for SOCKS proxy support:
+pip install pysocks
