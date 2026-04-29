@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 Enhanced Web Login Brute‑Force Tool
-Based on nandharjpm's Web-Login-Bruteforce
-Added features: threading, proxies, delay, flexible detection, logging, colors
-Author: Modified for educational purposes
-Repo: https://github.com/nandharjpm/Web-Login-Bruteforce
+Based on god of cyber's Web-Login-Bruteforce
+Added features: threading, proxies, delay, flexible detection, logging, colours, custom logo
+Author: subash.M
+Repo: https://github.com/masssubash240/Web-Login-Bruteforce
 """
 
 import requests
@@ -14,7 +14,6 @@ import threading
 import time
 import logging
 from queue import Queue
-from urllib.parse import urljoin
 
 # Optional: color output
 try:
@@ -26,6 +25,29 @@ except ImportError:
     class Fore:
         RED = GREEN = YELLOW = CYAN = RESET = ''
     Style = type('', (), {'RESET_ALL': ''})()
+
+# ------------------- ASCII LOGO (PASS CRACK) -------------------
+def show_logo():
+    logo = f"""
+{Fore.RED}
+   ╔══════════════════════════════════════════════════════════════╗
+   ║                                                              ║
+   ║   ██████╗  █████╗ ███████╗███████╗    ██████╗██████╗  █████╗  ║
+   ║   ██╔══██╗██╔══██╗██╔════╝██╔════╝   ██╔════╝██╔══██╗██╔══██╗ ║
+   ║   ██████╔╝███████║███████╗███████╗   ██║     ██████╔╝███████║ ║
+   ║   ██╔═══╝ ██╔══██║╚════██║╚════██║   ██║     ██╔══██╗██╔══██║ ║
+   ║   ██║     ██║  ██║███████║███████║   ╚██████╗██║  ██║██║  ██║ ║
+   ║   ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝    ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝ ║
+   ║                                                              ║
+   ║            🔐 Web Login Brute‑Force Tool 🔐                 ║
+   ║                      Enhanced Edition                        ║
+   ║                                                              ║
+   ╚══════════════════════════════════════════════════════════════╝
+{Style.RESET_ALL}
+{Fore.GREEN}      Author : subash.M
+{Fore.CYAN}      GitHub : https://github.com/masssubash240/Web-Login-Bruteforce{Style.RESET_ALL}
+    """
+    print(logo)
 
 # ------------------- Argument Parsing -------------------
 parser = argparse.ArgumentParser(description="Enhanced Web Login Brute‑Force Tool")
@@ -68,16 +90,15 @@ def load_wordlist(file_path):
 usernames = [args.user] if args.user else load_wordlist(args.userlist)
 passwords = [args.password] if args.password else load_wordlist(args.passwordlist)
 
+# ------------------- Setup -------------------
+show_logo()   # <-- Display logo at start
+
 print(f"{Fore.CYAN}[*] Loaded {len(usernames)} usernames and {len(passwords)} passwords.{Style.RESET_ALL}")
 
-# ------------------- Setup -------------------
 # Session with optional proxy
 session = requests.Session()
 if args.proxy:
-    session.proxies = {
-        "http": args.proxy,
-        "https": args.proxy
-    }
+    session.proxies = {"http": args.proxy, "https": args.proxy}
     print(f"{Fore.CYAN}[*] Using proxy: {args.proxy}{Style.RESET_ALL}")
 
 # Setup logging
@@ -118,7 +139,9 @@ def worker():
         except:
             break
 
+        # Early exit if already found
         if found:
+            work_queue.task_done()
             break
 
         # Prepare POST data
